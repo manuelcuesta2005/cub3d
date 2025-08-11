@@ -81,7 +81,7 @@ static void	fill_map(char *map_name, char **map)
 	close(fd);
 }
 
-static void	complete_map(char **map)
+void	complete_map(char **map)
 {
 	int		i;
 	int		max_len;
@@ -140,7 +140,7 @@ bool	map_reader(char *map_name, t_game *game)
 	if (!game->map)
 		return (free(route_map), 0);
 	fill_map(route_map, game->map);
-	complete_map(game->map);
+	//complete_map(game->map);
 	free(route_map);
 	return (1);
 }

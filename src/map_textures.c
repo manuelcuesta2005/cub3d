@@ -27,7 +27,7 @@ static int	parse_texture(char **dst, char *line)
 {
 	char	*path;
 
-	path = ft_strtrim(line + 3, " \n");
+	path = ft_strtrim(line + 3, " \n\r");
 	if (!path)
 		return (0);
 	if (!file_exists(path))

@@ -63,12 +63,12 @@ void	map_main(char *map_name, t_game *game)
 		free (game);
 		exit(1);
 	}
-	//if (map_header(game->map, game) == 0)
-	//{
-	//	ft_printf("Error\n");
-	//	free (game);
-	//	exit(1);
-	//}
+	if (map_header(game->map, game) == 0)
+	{
+		ft_printf("Error17\n");
+		free (game);
+		exit(1);
+	}
 	if (!map_validate(game))
 	{
 		ft_matrix_free(game->map);
