@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/so_long.h"
+#include "../inc/cub3d.h"
 
 static void	calculate_sizes(char **map, t_game *game)
 {

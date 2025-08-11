@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/so_long.h"
+#include "../inc/cub3d.h"
 
 static int	map_lines(char *map_name)
 {

@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/so_long.h"
+#include "../inc/cub3d.h"
 
 void	tile_render(t_game *game, int i, int j)
 {

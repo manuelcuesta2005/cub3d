@@ -23,8 +23,8 @@ MLX_FLAGS = -L$(MLX_DIR) -lmlx -lXext -lX11 -lm
 
 SRC = 	src/main.c \
 		src/map_reader.c \
+		src/map_textures.c \
 		src/map_validate.c \
-		src/map_checker.c \
 		src/sprites_load.c \
 		src/game_render.c \
 		src/player_moves.c

@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/so_long.h"
+#include "../inc/cub3d.h"
 
 static int	player_moves(t_game *game, int new_y, int new_x)
 {
