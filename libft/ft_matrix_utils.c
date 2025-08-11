@@ -53,7 +53,7 @@ char	**ft_matrix_duplicate(char **matrix)
 	return (matrix2);
 }
 
-void	ft_matrix_print(char **matrix)
+void	ft_matrix_print(char **matrix, int jump)
 {
 	int	i;
 
@@ -61,7 +61,8 @@ void	ft_matrix_print(char **matrix)
 	while (matrix[i])
 	{
 		write(1, matrix[i], ft_strlen(matrix[i]));
-		write(1, "\n", 1);
+		if (jump)
+			write(1, "\n", 1);
 		i++;
 	}
 }

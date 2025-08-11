@@ -44,10 +44,10 @@ static bool	validate_limits(t_game *game)
 	while (game->map[i])
 	{
 		j = 0;
-		while (game->map[i][j] && game->map[i][j] != '\n')
+		while (j < lim_j)
 		{
-			if (i == 0 || i == lim_i || j == 0 || j == lim_j)
-				if (game->map[i][j] != ' ' && game->map[i][j] != '1')
+			if (i == 0 || i == lim_i || j == 0 || j == lim_j - 1)
+				if (game->map && game->map[i][j] != ' ' && game->map[i][j] != '1')
 					return (0);
 			j++;
 		}
@@ -91,7 +91,7 @@ static bool	validate_spaces(t_game *game)
 	while (game->map[i])
 	{
 		j = 0;
-		while (game->map[i][j])
+		while (game->map[i][j] && j < game->width - 2)
 		{
 			if (game->map[i][j] == ' ')
 				if (!validate_space(game->map, j, i, game->width, game->height))
@@ -103,7 +103,7 @@ static bool	validate_spaces(t_game *game)
 	return (1);
 }
 
-static int	validate_chars(char **map, bool ini)
+static int	validate_chars(t_game *game, char **map, bool ini)
 {
 	int		i;
 	int		j;
@@ -112,14 +112,14 @@ static int	validate_chars(char **map, bool ini)
 	while (map[i])
 	{
 		j = 0;
-		while (map[i][j + 1])
+		while (map[i][j + 1] && j < game->width - 1)
 		{
 			if ((map[i][j] == 'N' || map[i][j] == 'S' || map[i][j] == 'W'
 					|| map[i][j] == 'E') && !ini)
 				ini = true;
 			else if (!(map[i][j] == '\n' || map[i][j] == ' '
 					|| map[i][j] == '1' || map[i][j] == '0'))
-				return (0);
+					return (0);
 			j++;
 		}
 		i++;
@@ -131,12 +131,13 @@ static int	validate_chars(char **map, bool ini)
 
 bool	map_validate(t_game *game)
 {
+	ft_matrix_print(game->map, 0);
 	calculate_sizes(game->map, game);
 	if (!validate_limits(game))
 		return (ft_printf("Error2\n"), 0);
 	if (!validate_spaces(game))
 		return (ft_printf("Error3\n"), 0);
-	if (!validate_chars(game->map, false))
+	if (!validate_chars(game, game->map, false))
 		return (ft_printf("Error4\n"), 0);
 	return (1);
 }

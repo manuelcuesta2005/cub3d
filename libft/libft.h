@@ -78,7 +78,7 @@ t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
 
 void	ft_matrix_free(char **matrix);
 char	**ft_matrix_duplicate(char **matrix);
-void	ft_matrix_print(char **matrix);
+void	ft_matrix_print(char **matrix, int jump);
 
 //GetNextLine
 # ifndef BUFFER_SIZE

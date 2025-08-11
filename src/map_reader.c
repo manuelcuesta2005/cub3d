@@ -81,42 +81,47 @@ static void	fill_map(char *map_name, char **map)
 	close(fd);
 }
 
-void	complete_map(char **map)
+void complete_map(char **map)
 {
-	int		i;
-	int		max_len;
-	int		j;
-	char	*new_line;
+    int		i;
+    int		max_len;
+    int		j;
+    char	*new_line;
 
-	i = -1;
-	max_len = 0;
-	while (map[++i])
-		if ((int)ft_strlen(map[i]) > max_len)
-			max_len = ft_strlen(map[i]);
-	i = 0;
-	while (map[i])
-	{
-		if ((int)ft_strlen(map[i]) < max_len)
-		{
-			new_line = malloc(sizeof(char) * (max_len + 1));
-			if (!new_line)
-				return ;
-			j = 0;
-			while (map[i][j] && map[i][j] != '\n')
-			{
-				new_line[j] = map[i][j];
-				j++;
-			}
-			while (j < max_len - 1)
-				new_line[j++] = ' ';
-			new_line[j] = '\n';
-			new_line[j + 1] = '\0';
-			free(map[i]);
-			map[i] = new_line;
-		}
-		i++;
-	}
+    max_len = 0;
+    i = 6;
+    while (map[++i])
+    {
+        int len = ft_strlen(map[i]);
+        while (len > 0 && (map[i][len - 1] == '\n' || map[i][len - 1] == '\r'))
+            len--;
+        if (len > max_len)
+            max_len = len;
+    }
+    i = 7;
+    while (map[i])
+    {
+        int len = ft_strlen(map[i]);
+        while (len > 0 && (map[i][len - 1] == '\n' || map[i][len - 1] == '\r'))
+            len--;
+        if (len < max_len)
+        {
+            new_line = malloc(max_len + 2);
+            if (!new_line)
+                return;
+            for (j = 0; j < len; j++)
+                new_line[j] = map[i][j];
+            while (j < max_len)
+                new_line[j++] = ' ';
+            new_line[j++] = '\n';
+            new_line[j] = '\0';
+            free(map[i]);
+            map[i] = new_line;
+        }
+        i++;
+    }
 }
+
 
 bool	map_reader(char *map_name, t_game *game)
 {
@@ -140,7 +145,7 @@ bool	map_reader(char *map_name, t_game *game)
 	if (!game->map)
 		return (free(route_map), 0);
 	fill_map(route_map, game->map);
-	//complete_map(game->map);
+	complete_map(game->map);
 	free(route_map);
 	return (1);
 }

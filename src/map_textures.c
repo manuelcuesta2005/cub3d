@@ -76,12 +76,12 @@ void	update_map_remove_header(t_game *game)
 	char	**new_map;
 
 	total = map_height(game->map);
-	if (total <= 7)
+	if (total <= 8)
 		return ;
-	new_map = malloc((total - 7 + 1) * sizeof(char *));
+	new_map = malloc((total - 8 + 1) * sizeof(char *));
 	if (!new_map)
 		return ;
-	i = 7;
+	i = 8;
 	j = 0;
 	while (game->map[i])
 	{
@@ -119,5 +119,6 @@ int	map_header(char **map, t_game *game)
 			found++;
 		i++;
 	}
+	update_map_remove_header(game);
 	return (found == 6);
 }
