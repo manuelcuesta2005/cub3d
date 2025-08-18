@@ -9,7 +9,7 @@
 /*   Updated: 2025/03/15 20:32:18 by mcuesta-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "cub3d.h"
+#include "../../inc/cub3d.h"
 
 int can_move(t_game *game, double newX, double newY)
 {
@@ -62,8 +62,8 @@ int key_hook(int keycode, t_player *player, t_game *game)
 		rotate_camera(player, player->rotateSpeed);
 	else if (keycode == 65361)
 		rotate_camera(player, -player->rotateSpeed);
-	else if (keycode == 65307)
-		close_window(game, "Close the game...");
+	// else if (keycode == 65307)
+	// 	close_window(game, "Close the game...");
 	return (0);
 }
 

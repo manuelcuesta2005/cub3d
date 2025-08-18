@@ -1,4 +1,4 @@
-#include "cub3d.h"
+#include "../../inc/cub3d.h"
 
 void load_images(t_game *game)
 {
@@ -12,5 +12,3 @@ void load_images(t_game *game)
     game->img_player = mlx_xpm_file_to_image(game->mlx,
                                              "textures/player.xpm", &x, &y);
 }
-
-void    render_map(t_game *game)

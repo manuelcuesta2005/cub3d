@@ -1,3 +1,5 @@
+#include "../../inc/cub3d.h"
+
 void start_position(t_player *player, const char dir)
 {
     if (dir == 'S')

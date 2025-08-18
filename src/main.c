@@ -78,17 +78,22 @@ void	map_main(char *map_name, t_game *game)
 	find_player(game->map, game);
 }
 
+int	render_loop(t_game *game)
+{
+	screen_columns(game->player, game, game->cast);
+	return (0);
+}
+
 static void	mlx_main(t_game *game)
 {
 	game->mlx = mlx_init();
 	if (!game->mlx)
 		return ;
 	game->win = mlx_new_window(game->mlx,
-			game->width * 64, game->height * 64, "so_long");
+			SCREEN_W, SCREEN_H, "cub3d");
 	if (!game->win)
 		return ;
-	load_images(game);
-	game_render(game);
+	mlx_loop_hook(game->mlx, render_loop, game);
 	mlx_key_hook(game->win, handle_key, game);
 	mlx_hook(game->win, 17, 0, handle_exit, game);
 	mlx_loop(game->mlx);

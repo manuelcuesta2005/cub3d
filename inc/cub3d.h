@@ -20,6 +20,8 @@
 #include <math.h>
 
 #define PI 3.14159265358979323846
+#define	SCREEN_W 1280
+#define	SCREEN_H 800
 typedef struct s_rgb
 {
 	int r;
@@ -78,6 +80,7 @@ typedef struct s_game
 	int player_x;
 	int player_y;
 	t_player *player;
+	t_cast	*cast;
 } t_game;
 
 
@@ -92,5 +95,7 @@ int handle_key(int keycode, t_game *game);
 int handle_exit(t_game *game);
 
 // player and raycast
-void start_position(t_player *player, char *dir);
+void start_position(t_player *player, char dir);
+void screen_columns(t_player *player, t_game *game, t_cast *cast);
+void init_player(t_player **player, int x, int y, const char direction);
 #endif
