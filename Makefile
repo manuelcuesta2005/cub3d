@@ -25,9 +25,7 @@ SRC = 	src/main.c \
 		src/map_reader.c \
 		src/map_textures.c \
 		src/map_validate.c \
-		src/sprites_load.c \
 		src/game_render.c \
-		src/player_moves.c \
 		src/cast_and_play/player.c \
 		src/cast_and_play/raycasting.c \
 		src/cast_and_play/utils.c \

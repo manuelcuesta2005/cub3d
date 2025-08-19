@@ -91,11 +91,10 @@ static void	mlx_main(t_game *game)
 		return ;
 	game->win = mlx_new_window(game->mlx,
 			SCREEN_W, SCREEN_H, "cub3d");
-	if (!game->win)
-		return ;
-	mlx_loop_hook(game->mlx, render_loop, game);
-	mlx_key_hook(game->win, handle_key, game);
-	mlx_hook(game->win, 17, 0, handle_exit, game);
+	//mlx_loop_hook(game->mlx, render_loop, game);
+	write(1, "e\n", 2);
+	//mlx_key_hook(game->win, handle_key, game);
+	//mlx_hook(game->win, 17, 0, handle_exit, game);
 	mlx_loop(game->mlx);
 }
 
@@ -107,6 +106,7 @@ int	main(int argc, char **argv)
 		return (1);
 	game = malloc(sizeof(t_game));
 	map_main(argv[1], game);
+
 	mlx_main(game);
 	return (0);
 }
