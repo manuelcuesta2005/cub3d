@@ -25,11 +25,11 @@ SRC = 	src/main.c \
 		src/map_reader.c \
 		src/map_textures.c \
 		src/map_validate.c \
-		src/game_render.c \
-		src/cast_and_play/player.c \
-		src/cast_and_play/raycasting.c \
-		src/cast_and_play/utils.c \
-		src/cast_and_play/draw.c
+		src/draw_and_render/draw.c \
+		src/draw_and_render/player.c \
+		src/draw_and_render/raycasting.c \
+		src/draw_and_render/rendering.c \
+		src/draw_and_render/utils.c
 
 OBJDIR = obj
 OBJS = $(SRC:src/%.c=$(OBJDIR)/%.o)
