@@ -27,7 +27,10 @@ int	handle_exit(t_game *game)
 		mlx_destroy_image(game->mlx, game->textures[1].img);
 		mlx_destroy_image(game->mlx, game->textures[2].img);
 		mlx_destroy_image(game->mlx, game->textures[3].img);
+		mlx_destroy_image(game->mlx, game->img->img);
 		mlx_destroy_display(game->mlx);
+		free(game->player);
+		free(game->cast);
 		free(game->mlx);
 		free(game);
 	}
@@ -90,12 +93,11 @@ static void	mlx_main(t_game *game)
 	game->mlx = mlx_init();
 	if (!game->mlx)
 		return ;
-	game->win = mlx_new_window(game->mlx, game->width * 64, game->height * 64,
-			"so_long");
+	game->win = mlx_new_window(game->mlx, SCREEN_W, SCREEN_H, "cub3D");
 	if (!game->win)
 		return ;
 	load_images(game);
-	init_player(&game->player, game->player->axisX, game->player->axisY,
+	init_player(&game->player, game->player_x, game->player_y,
 		game->map[game->player_y][game->player_x]);
 	game->cast = malloc(sizeof(t_cast));
 	game->img = malloc(sizeof(t_img));

@@ -68,7 +68,7 @@ void set_distance(t_cast *cast, t_player *player)
 
 static void calc_limits(t_cast *cast, int *start, int *end, int h)
 {
-    *start = cast->line_height / 2 + h / 2;
+    *start = -cast->line_height / 2 + h / 2;
     if (*start < 0)
         *start = 0;
     *end = cast->line_height / 2 + h / 2;

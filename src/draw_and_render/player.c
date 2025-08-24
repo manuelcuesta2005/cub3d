@@ -55,22 +55,22 @@ void rotate_camera(t_player *player, double rotateSpeed)
 	player->planeY = old_planeX * sin_a + player->planeY * cos_a;
 }
 
-int key_hook(int keycode, t_player *player, t_game *game)
+int key_hook(int keycode, t_game *game)
 {
-	if (!player)
+	if (!game->player)
 		return (0);
-	if (keycode == 119)
-		move_player(game, player, player->visionX, player->visionY);
-	else if (keycode == 115)
-		move_player(game, player, -player->visionX, -player->visionY);
-	else if (keycode == 97)
-		move_player(game, player, -player->planeX, -player->planeY);
-	else if (keycode == 100)
-		move_player(game, player, player->planeX, player->planeY);
-	else if (keycode == 65363)
-		rotate_camera(player, player->rotateSpeed);
-	else if (keycode == 65361)
-		rotate_camera(player, -player->rotateSpeed);
+	if (keycode == KEY_W)
+		move_player(game, game->player, game->player->visionX, game->player->visionY);
+	else if (keycode == KEY_A)
+		move_player(game, game->player, -game->player->visionX, -game->player->visionY);
+	else if (keycode == KEY_S)
+		move_player(game, game->player, -game->player->planeX, -game->player->planeY);
+	else if (keycode == KEY_D)
+		move_player(game, game->player, game->player->planeX, game->player->planeY);
+	else if (keycode == KEY_RIGHT)
+		rotate_camera(game->player, game->player->rotateSpeed);
+	else if (keycode == KEY_LEFT)
+		rotate_camera(game->player, -game->player->rotateSpeed);
 	// else if (keycode == 65307)
 	// 	close_window(game, "Close the game...");
 	return (0);

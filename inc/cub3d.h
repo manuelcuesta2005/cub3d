@@ -25,13 +25,13 @@
 # define PI 3.14159265358979323846
 # define SCREEN_W 1080
 # define SCREEN_H 600
-# define KEY_W 119;
-# define KEY_A 115;
-# define KEY_S 97;
-# define KEY_D 100;
-# define KEY_LEFT 65361;
-# define KEY_RIGHT 65363;
-# define KEY_ESC 65307;
+# define KEY_W 119
+# define KEY_A 115
+# define KEY_S 97
+# define KEY_D 100
+# define KEY_LEFT 65361
+# define KEY_RIGHT 65363
+# define KEY_ESC 65307
 
 typedef struct s_rgb
 {
@@ -120,7 +120,7 @@ int		handle_exit(t_game *game);
 int		set_rgb(t_rgb *background);
 int		get_texture(t_img *img, int x, int y);
 int		can_move(t_game *game, double newX, double newY);
-int		key_hook(int keycode, t_player *player, t_game *game);
+int		key_hook(int keycode, t_game *game);
 void	load_images(t_game *game);
 void	paint_pixels(t_img *img, int x, int y, int color);
 void	rotate_camera(t_player *player, double rotateSpeed);
