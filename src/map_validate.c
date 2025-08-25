@@ -23,7 +23,7 @@ static void	calculate_sizes(char **map, t_game *game)
 		j = 0;
 		while (map[i][j])
 			j++;
-		if (j -1 > game->width)
+		if (i == 0)
 			game->width = j - 1;
 		i++;
 	}
@@ -39,8 +39,9 @@ static bool	validate_limits(t_game *game)
 
 	i = 0;
 	lim_i = game->height - 1;
-	lim_j = game->width - 1;
+	lim_j = game->width;
 	i = 0;
+	ft_matrix_print(game->map, false);
 	while (game->map[i])
 	{
 		j = 0;
@@ -48,7 +49,11 @@ static bool	validate_limits(t_game *game)
 		{
 			if (i == 0 || i == lim_i || j == 0 || j == lim_j - 1)
 				if (game->map && game->map[i][j] != ' ' && game->map[i][j] != '1')
+				{
+					printf("Width: %i Height: %i\n", lim_j, lim_i);
+					printf("Y: %i, X: %i, Value: %c\n", i, j, game->map[i][j]);
 					return (0);
+				}
 			j++;
 		}
 		i++;
@@ -131,7 +136,6 @@ static int	validate_chars(t_game *game, char **map, bool ini)
 
 bool	map_validate(t_game *game)
 {
-	ft_matrix_print(game->map, 0);
 	calculate_sizes(game->map, game);
 	if (!validate_limits(game))
 		return (ft_printf("Error2\n"), 0);

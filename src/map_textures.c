@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map_textures.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcuesta- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mpico-bu <mpico-bu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 12:15:55 by mcuesta-          #+#    #+#             */
-/*   Updated: 2025/08/23 12:15:56 by mcuesta-         ###   ########.fr       */
+/*   Updated: 2025/08/25 14:49:17 by mpico-bu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,11 +96,13 @@ void	update_map_remove_header(t_game *game)
 	game->map = new_map;
 }
 
-int	map_header(char **map, t_game *game)
+int	map_header(t_game *game)
 {
 	int		i;
 	int		found;
-
+	char	**map;
+	
+	map = game->map;
 	found = 0;
 	i = 0;
 	while (i < 7)

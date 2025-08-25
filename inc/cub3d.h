@@ -110,7 +110,7 @@ typedef struct s_game
 bool	map_reader(char *map_name, t_game *game);
 bool	map_validate(t_game *game);
 bool	map_checker(t_game *game);
-
+int		map_header(t_game *game);
 void	load_images(t_game *game);
 
 

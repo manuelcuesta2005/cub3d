@@ -70,6 +70,12 @@ void	map_main(char *map_name, t_game *game)
 		ft_printf("Error\n");
 		free(game);
 		exit(1);
+	}	
+	if (map_header(game) == 0)
+	{
+		ft_printf("Error\n");
+		free(game);
+		exit(1);
 	}
 	if (!map_validate(game))
 	{
