@@ -72,7 +72,6 @@ typedef struct s_player
 	double planeY;
 	double moveSpeed;
 	double rotateSpeed;
-	double angle;
 } t_player;
 
 typedef struct s_img
@@ -118,6 +117,7 @@ int		handle_exit(t_game *game);
 
 // player and raycasting
 int		set_rgb(t_rgb *background);
+int		render_loop(t_game *game);
 int		get_texture(t_img *img, int x, int y);
 int		can_move(t_game *game, double newX, double newY);
 int		key_hook(int keycode, t_game *game);
@@ -134,7 +134,7 @@ void	draw_background(t_game *game);
 void	start_position(t_player *player, const char dir);
 void	move_player(t_game *game, t_player *player, double axisX,
 		double axisY);
-t_img	*assign_texture(t_game *game);
+t_img	*assign_texture(t_game *game, t_cast *cast);
 double	get_wall_X(t_cast *cast, t_player *player);
 
 #endif

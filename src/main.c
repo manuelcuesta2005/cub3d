@@ -86,13 +86,6 @@ void	map_main(char *map_name, t_game *game)
 	find_player(game->map, game);
 }
 
-static int	render_loop(t_game *game)
-{
-	draw_background(game);
-	screen_columns(game->player, game, game->cast);
-	mlx_put_image_to_window(game->mlx, game->win, game->img->img, 0, 0);
-	return (0);
-}
 
 static void	mlx_main(t_game *game)
 {
@@ -109,6 +102,8 @@ static void	mlx_main(t_game *game)
 	game->img = malloc(sizeof(t_img));
 	if (!game->img)
 		return ;
+	game->img->height = 64;
+	game->img->width = 64;
 	game->img->img = mlx_new_image(game->mlx, SCREEN_W, SCREEN_H);
 	game->img->addr = mlx_get_data_addr(game->img->img, &game->img->bpp,
 			&game->img->line_length, &game->img->endian);

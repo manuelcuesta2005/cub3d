@@ -66,55 +66,57 @@ void set_distance(t_cast *cast, t_player *player)
         cast->perpWallDist = (cast->mapY - player->axisY + (1 - cast->stepY) / 2) / cast->rayDirY;
 }
 
-static void calc_limits(t_cast *cast, int *start, int *end, int h)
+static void calc_limits(t_cast *cast, int *start, int *end)
 {
-    *start = -cast->line_height / 2 + h / 2;
+    *start = -cast->line_height / 2 + SCREEN_H / 2;
     if (*start < 0)
         *start = 0;
-    *end = cast->line_height / 2 + h / 2;
-    if (*end >= h)
-        *end = h - 1;
+    *end = cast->line_height / 2 + SCREEN_H / 2;
+    if (*end >= SCREEN_H)
+        *end = SCREEN_H - 1;
 }
 
-static void	draw_tex_column(t_game *game, t_cast *cast, int x, t_img *tex)
+static void draw_tex_column(t_game *game, t_cast *cast, int x, t_img *tex)
 {
-	double	step;
-	double	tex_pos;
-	int		y;
-	int		tex_y;
-	int		color;
-	int		start;
-	int		end;
+    double step;
+    double tex_pos;
+    int y;
+    int tex_y;
+    int color;
+    int start;
+    int end;
 
-	calc_limits(cast, &start, &end, game->height);
-	step = 1.0 * tex->height / cast->line_height;
-	tex_pos = (start - game->height / 2 + cast->line_height / 2) * step;
-	y = start;
-	while (y < end)
-	{
-		tex_y = (int)tex_pos & (tex->height - 1);
-		tex_pos += step;
-		color = get_texture(tex, cast->textureX, tex_y);
-		if (cast->side == 1)
-			color = (color >> 1) & 0x7F7F7F;
-		paint_pixels(game->img, x, y, color);
-		y++;
-	}
+    calc_limits(cast, &start, &end);
+    step = 1.0 * tex->height / cast->line_height;
+    tex_pos = (start - SCREEN_H / 2 + cast->line_height / 2) * step;
+    y = start;
+    while (y < end)
+    {
+        tex_y = (int)tex_pos % tex->height;
+        if (tex->height < 0)
+            tex_y += tex->height;
+        tex_pos += step;
+        color = get_texture(tex, cast->textureX, tex_y);
+        if (cast->side == 1)
+            color = (color >> 1) & 0x7F7F7F;
+        paint_pixels(game->img, x, y, color);
+        y++;
+    }
 }
 
-void	draw_columns(t_game *game, t_cast *cast, int x)
+void draw_columns(t_game *game, t_cast *cast, int x)
 {
-	double	wallX;
-	t_img	*tex;
+    double wallX;
+    t_img *tex;
 
-	cast->line_height = (int)(game->height / cast->perpWallDist);
-	tex = assign_texture(game);
-	wallX = get_wall_X(cast, game->player);
-	cast->textureX = (int)(wallX * (double)tex->width);
-	if ((cast->side == 0 && cast->rayDirX > 0) ||
-		(cast->side == 1 && cast->rayDirY < 0))
-		cast->textureX = tex->width - cast->textureX - 1;
-	draw_tex_column(game, cast, x, tex);
+    cast->line_height = (int)(SCREEN_H / cast->perpWallDist);
+    tex = assign_texture(game, cast);
+    wallX = get_wall_X(cast, game->player);
+    cast->textureX = (int)(wallX * (double)tex->width);
+    if ((cast->side == 0 && cast->rayDirX > 0) ||
+        (cast->side == 1 && cast->rayDirY < 0))
+        cast->textureX = tex->width - cast->textureX - 1;
+    draw_tex_column(game, cast, x, tex);
 }
 
 void screen_columns(t_player *player, t_game *game, t_cast *cast)
@@ -129,8 +131,8 @@ void screen_columns(t_player *player, t_game *game, t_cast *cast)
         cast->rayDirY = player->visionY + player->planeY * cast->cameraX;
         cast->mapX = (int)player->axisX;
         cast->mapY = (int)player->axisY;
-        cast->deltaDistX = fabs(1 / cast->rayDirX);
-        cast->deltaDistY = fabs(1 / cast->rayDirY);
+        cast->deltaDistX = (cast->rayDirX == 0) ? 1e30 : fabs(1 / cast->rayDirX);
+        cast->deltaDistY = (cast->rayDirY == 0) ? 1e30 : fabs(1 / cast->rayDirY);
         get_steps(player, cast);
         DDA_algorhitm(game, cast);
         set_distance(cast, player);
@@ -138,4 +140,3 @@ void screen_columns(t_player *player, t_game *game, t_cast *cast)
         x++;
     }
 }
-

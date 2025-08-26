@@ -14,13 +14,16 @@
 
 int can_move(t_game *game, double newX, double newY)
 {
-	double	margin;
+	double margin;
 
 	margin = 0.2;
 
 	if (newX < margin || newX >= game->width - margin || newY < margin || newY >= game->height - margin)
 		return (0);
-	if (game->map[(int)newY][(int)newX] == '1')
+	if (game->map[(int)newY][(int)newX] == '1' || game->map[(int)(newY + margin)][(int)newX] == '1' ||
+        game->map[(int)(newY - margin)][(int)newX] == '1' ||
+        game->map[(int)newY][(int)(newX + margin)] == '1' ||
+        game->map[(int)newY][(int)(newX - margin)] == '1')
 		return (0);
 	return (1);
 }
@@ -80,19 +83,18 @@ void init_player(t_player **player, int x, int y, const char direction)
 {
 	(*player) = malloc(sizeof(t_player));
 	if (!(*player))
-		return ;
+		return;
 	(*player)->axisX = x + 0.5;
 	(*player)->axisY = y + 0.5;
 	(*player)->moveSpeed = 0.05;
 	(*player)->rotateSpeed = 0.05;
-	(*player)->angle = 0.66;
 	if (direction == 'N')
-    {
-        (*player)->visionX = 0;
-        (*player)->visionY = -1;
-        (*player)->planeX = 0.66;
-        (*player)->planeY = 0;
-    }
+	{
+		(*player)->visionX = 0;
+		(*player)->visionY = -1;
+		(*player)->planeX = 0.66;
+		(*player)->planeY = 0;
+	}
 	else
 		start_position(*player, direction);
 }

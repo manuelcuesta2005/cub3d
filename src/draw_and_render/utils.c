@@ -37,13 +37,13 @@ void start_position(t_player *player, const char dir)
     }
 }
 
-t_img   *assign_texture(t_game *game)
+t_img   *assign_texture(t_game *game, t_cast *cast)
 {
-    if (game->cast->side == 0 && game->cast->rayDirX > 0)
+    if (cast->side == 0 && cast->rayDirX > 0)
         return (&game->textures[0]);
-    else if (game->cast->side == 0 && game->cast->rayDirX < 0)
+    else if (cast->side == 0 && cast->rayDirX < 0)
         return (&game->textures[1]);
-    else if (game->cast->side == 1 && game->cast->rayDirY > 0)
+    else if (cast->side == 1 && cast->rayDirY > 0)
         return (&game->textures[2]);
     else
         return (&game->textures[3]);
