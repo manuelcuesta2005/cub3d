@@ -33,7 +33,7 @@ void	map_main(char *map_name, t_game *game)
 		ft_free_game(game);
 		exit(1);
 	}
-	if (map_header(game) == 0)
+	if (map_header(game, game->map) == 0)
 	{
 		ft_printf("Error\nHeader not valid\n");
 		ft_free_game(game);

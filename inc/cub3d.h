@@ -35,9 +35,10 @@
 
 typedef struct s_rgb
 {
-	int	r;
-	int	g;
-	int	b;
+	bool	used;
+	int		r;
+	int		g;
+	int		b;
 }		t_rgb;
 
 typedef struct s_cast
@@ -111,7 +112,7 @@ typedef struct s_game
 bool	map_reader(char *map_name, t_game *game);
 bool	map_validate(t_game *game);
 bool	map_checker(t_game *game);
-int		map_header(t_game *game);
+int		map_header(t_game *game, char **map);
 int		map_height(char **map);
 void	find_player(char **map, t_game *game);
 void	calculate_sizes(char **map, t_game *game);

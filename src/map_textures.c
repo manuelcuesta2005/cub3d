@@ -6,7 +6,7 @@
 /*   By: mpico-bu <mpico-bu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 12:15:55 by mcuesta-          #+#    #+#             */
-/*   Updated: 2025/08/30 09:11:05 by mpico-bu         ###   ########.fr       */
+/*   Updated: 2025/08/30 09:23:15 by mpico-bu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ static int	p_rgb(t_rgb *color, char *line)
 	int		g;
 	int		b;
 
+	if (color->used == true)
+		return (0);
 	split = ft_split(line + 2, ',');
 	if (!split || !split[0] || !split[1] || !split[2] || split[3])
 		return (ft_matrix_free(split), 0);
@@ -56,6 +58,7 @@ static int	p_rgb(t_rgb *color, char *line)
 	color->r = r;
 	color->g = g;
 	color->b = b;
+	color->used = true;
 	ft_matrix_free(split);
 	return (1);
 }
@@ -86,15 +89,15 @@ void	update_map_remove_header(t_game *game)
 	game->map = new_map;
 }
 
-int	map_header(t_game *game)
+int	map_header(t_game *game, char **map)
 {
 	int		i;
 	int		found;
-	char	**map;
 
-	map = game->map;
 	found = 0;
 	i = 0;
+	game->ceiling.used = false;
+	game->floor.used = false;
 	while (i < game->lines_header && game->map[i])
 	{
 		if (!ft_strncmp(map[i], "NO ", 3) && p_text(&game->tex_no, map[i]))
