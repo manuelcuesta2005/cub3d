@@ -41,7 +41,6 @@ static bool	validate_limits(t_game *game)
 	lim_i = game->height - 1;
 	lim_j = game->width;
 	i = 0;
-	ft_matrix_print(game->map, false);
 	while (game->map[i])
 	{
 		j = 0;
@@ -49,11 +48,7 @@ static bool	validate_limits(t_game *game)
 		{
 			if (i == 0 || i == lim_i || j == 0 || j == lim_j - 1)
 				if (game->map && game->map[i][j] != ' ' && game->map[i][j] != '1')
-				{
-					printf("Width: %i Height: %i\n", lim_j, lim_i);
-					printf("Y: %i, X: %i, Value: %c\n", i, j, game->map[i][j]);
 					return (0);
-				}
 			j++;
 		}
 		i++;
@@ -61,6 +56,7 @@ static bool	validate_limits(t_game *game)
 	return (1);
 }
 
+/*
 static bool	validate_space(char **mp, int x, int y, int width, int height)
 {
 	if (y > 0 && mp[y - 1][x] && mp[y - 1][x] != ' ' && mp[y - 1][x] != '1')
@@ -86,6 +82,23 @@ static bool	validate_space(char **mp, int x, int y, int width, int height)
 		return (0);
 	return (1);
 }
+*/
+
+static bool	validate_space(char **mp, int x, int y, int width, int height)
+{
+	if (y > 0 && mp[y - 1][x] && mp[y - 1][x] != ' ' && mp[y - 1][x] != '1')
+		return (0);
+	if (y + 1 < height
+		&& mp[y + 1][x] && mp[y + 1][x] != ' ' && mp[y + 1][x] != '1')
+		return (0);
+	if (x > 0 && mp[y][x - 1] && mp[y][x - 1] != ' ' && mp[y][x - 1] != '1')
+		return (0);
+	if (x + 1 < width
+		&& mp[y][x + 1] && mp[y][x + 1] != ' ' && mp[y][x + 1] != '1')
+		return (0);
+	return (1);
+}
+
 
 static bool	validate_spaces(t_game *game)
 {
@@ -96,7 +109,7 @@ static bool	validate_spaces(t_game *game)
 	while (game->map[i])
 	{
 		j = 0;
-		while (game->map[i][j] && j < game->width - 2)
+		while (game->map[i][j] && j < game->width)
 		{
 			if (game->map[i][j] == ' ')
 				if (!validate_space(game->map, j, i, game->width, game->height))
@@ -138,10 +151,16 @@ bool	map_validate(t_game *game)
 {
 	calculate_sizes(game->map, game);
 	if (!validate_limits(game))
-		return (ft_printf("Error2\n"), 0);
+		{
+			ft_printf("Error\nLimits must be walls or spaces.\n");
+			return (0);
+		}
 	if (!validate_spaces(game))
-		return (ft_printf("Error3\n"), 0);
+		{
+			ft_printf("Error\nSpaces must be surrounded by walls or spaces.\n");
+			return (0);
+		}
 	if (!validate_chars(game, game->map, false))
-		return (ft_printf("Error4\n"), 0);
+		return (ft_printf("Error\nCharacters map are invalid.\n"), 0);
 	return (1);
 }

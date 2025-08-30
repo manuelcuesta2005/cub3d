@@ -63,24 +63,38 @@ static void	find_player(char **map, t_game *game)
 	return ;
 }
 
+void ft_free_game(t_game *game)
+{
+	if (game->tex_ea)
+		free(game->tex_ea);
+	if (game->tex_no)
+		free(game->tex_no);
+	if (game->tex_so)
+		free(game->tex_so);
+	if (game->tex_we)
+		free(game->tex_we);
+	if (game->map)
+		ft_matrix_free(game->map);
+	free(game);
+}
+
 void	map_main(char *map_name, t_game *game)
 {
 	if (map_reader(map_name, game) == 0)
 	{
-		ft_printf("Error\n");
-		free(game);
+		ft_printf("Error1\n");
+		ft_free_game(game);
 		exit(1);
 	}	
 	if (map_header(game) == 0)
 	{
-		ft_printf("Error\n");
-		free(game);
+		ft_printf("Error2\n");
+		ft_free_game(game);
 		exit(1);
 	}
 	if (!map_validate(game))
 	{
-		ft_matrix_free(game->map);
-		free(game);
+		ft_free_game(game);
 		exit(1);
 	}
 	find_player(game->map, game);
