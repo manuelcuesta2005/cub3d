@@ -15,7 +15,6 @@
 
 #include "../inc/cub3d.h"
 
-
 int	handle_exit(t_game *game)
 {
 	if (game)
@@ -65,6 +64,8 @@ static void	find_player(char **map, t_game *game)
 
 void ft_free_game(t_game *game)
 {
+	if (game->route_map)
+		free(game->route_map);
 	if (game->tex_ea)
 		free(game->tex_ea);
 	if (game->tex_no)
@@ -82,13 +83,12 @@ void	map_main(char *map_name, t_game *game)
 {
 	if (map_reader(map_name, game) == 0)
 	{
-		ft_printf("Error1\n");
 		ft_free_game(game);
 		exit(1);
-	}	
+	}
 	if (map_header(game) == 0)
 	{
-		ft_printf("Error2\n");
+		ft_printf("Error\nHeader not valid\n");
 		ft_free_game(game);
 		exit(1);
 	}
@@ -132,7 +132,7 @@ int	main(int argc, char **argv)
 	t_game *game;
 
 	if (argc != 2)
-		return (1);
+		return (ft_printf("Error\nUsage: ./cub3D <map>\n"), 1);
 	game = malloc(sizeof(t_game));
 	map_main(argv[1], game);
 	mlx_main(game);

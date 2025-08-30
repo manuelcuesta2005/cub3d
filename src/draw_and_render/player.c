@@ -3,35 +3,34 @@
 /*                                                        :::      ::::::::   */
 /*   player.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mcuesta- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mpico-bu <mpico-bu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 12:03:14 by mcuesta-          #+#    #+#             */
-/*   Updated: 2025/08/23 12:03:16 by mcuesta-         ###   ########.fr       */
+/*   Updated: 2025/08/30 05:07:09 by mpico-bu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/cub3d.h"
 
-int can_move(t_game *game, double newX, double newY)
+int	can_move(t_game *game, double newX, double newY)
 {
-	double margin;
+	double	margin;
 
 	margin = 0.2;
-
 	if (newX < margin || newX >= game->width - margin || newY < margin || newY >= game->height - margin)
 		return (0);
 	if (game->map[(int)newY][(int)newX] == '1' || game->map[(int)(newY + margin)][(int)newX] == '1' ||
-        game->map[(int)(newY - margin)][(int)newX] == '1' ||
-        game->map[(int)newY][(int)(newX + margin)] == '1' ||
-        game->map[(int)newY][(int)(newX - margin)] == '1')
+		game->map[(int)(newY - margin)][(int)newX] == '1' ||
+		game->map[(int)newY][(int)(newX + margin)] == '1' ||
+		game->map[(int)newY][(int)(newX - margin)] == '1')
 		return (0);
 	return (1);
 }
 
-void move_player(t_game *game, t_player *player, double axisX, double axisY)
+void	move_player(t_game *game, t_player *player, double axisX, double axisY)
 {
-	double positionX;
-	double positionY;
+	double	positionX;
+	double	positionY;
 
 	positionX = player->axisX + axisX * player->moveSpeed;
 	positionY = player->axisY + axisY * player->moveSpeed;
@@ -41,12 +40,12 @@ void move_player(t_game *game, t_player *player, double axisX, double axisY)
 		player->axisY = positionY;
 }
 
-void rotate_camera(t_player *player, double rotateSpeed)
+void	rotate_camera(t_player *player, double rotateSpeed)
 {
-	double sin_a;
-	double cos_a;
-	double old_dirX;
-	double old_planeX;
+	double	sin_a;
+	double	cos_a;
+	double	old_dirX;
+	double	old_planeX;
 
 	sin_a = sin(rotateSpeed);
 	cos_a = cos(rotateSpeed);
@@ -58,7 +57,7 @@ void rotate_camera(t_player *player, double rotateSpeed)
 	player->planeY = old_planeX * sin_a + player->planeY * cos_a;
 }
 
-int key_hook(int keycode, t_game *game)
+int	key_hook(int keycode, t_game *game)
 {
 	if (!game->player)
 		return (0);
@@ -79,7 +78,7 @@ int key_hook(int keycode, t_game *game)
 	return (0);
 }
 
-void init_player(t_player **player, int x, int y, const char direction)
+void	init_player(t_player **player, int x, int y, const char direction)
 {
 	(*player) = malloc(sizeof(t_player));
 	if (!(*player))

@@ -6,7 +6,7 @@
 /*   By: mpico-bu <mpico-bu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 12:15:55 by mcuesta-          #+#    #+#             */
-/*   Updated: 2025/08/25 14:49:17 by mpico-bu         ###   ########.fr       */
+/*   Updated: 2025/08/30 05:42:43 by mpico-bu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static int	file_exists(char *path)
 	return (1);
 }
 
-static int	parse_texture(char **dst, char *line)
+static int	p_texture(char **dst, char *line)
 {
 	char	*path;
 
@@ -36,7 +36,7 @@ static int	parse_texture(char **dst, char *line)
 	return (1);
 }
 
-static int	parse_rgb(t_rgb *color, char *line)
+static int	p_rgb(t_rgb *color, char *line)
 {
 	char	**split;
 	int		r;
@@ -101,26 +101,27 @@ int	map_header(t_game *game)
 	int		i;
 	int		found;
 	char	**map;
-	
+
 	map = game->map;
 	found = 0;
 	i = 0;
-	while (i < 7)
+	while (i < 7 && game->map[i])
 	{
-		if (!ft_strncmp(map[i], "NO ", 3) && parse_texture(&game->tex_no, map[i]))
+		if (!ft_strncmp(map[i], "NO ", 3) && p_texture(&game->tex_no, map[i]))
 			found++;
-		else if (!ft_strncmp(map[i], "SO ", 3) && parse_texture(&game->tex_so, map[i]))
+		else if (!ft_strncmp(map[i], "SO ", 3) && p_texture(&game->tex_so, map[i]))
 			found++;
-		else if (!ft_strncmp(map[i], "WE ", 3) && parse_texture(&game->tex_we, map[i]))
+		else if (!ft_strncmp(map[i], "WE ", 3) && p_texture(&game->tex_we, map[i]))
 			found++;
-		else if (!ft_strncmp(map[i], "EA ", 3) && parse_texture(&game->tex_ea, map[i]))
+		else if (!ft_strncmp(map[i], "EA ", 3) && p_texture(&game->tex_ea, map[i]))
 			found++;
-		else if (!ft_strncmp(map[i], "F ", 2) && parse_rgb(&game->floor, map[i]))
+		else if (!ft_strncmp(map[i], "F ", 2) && p_rgb(&game->floor, map[i]))
 			found++;
-		else if (!ft_strncmp(map[i], "C ", 2) && parse_rgb(&game->ceiling, map[i]))
+		else if (!ft_strncmp(map[i], "C ", 2) && p_rgb(&game->ceiling, map[i]))
 			found++;
 		i++;
 	}
-	update_map_remove_header(game);
-	return (found == 6);
+	if (found == 6)
+		return (update_map_remove_header(game), 1);
+	return (0);
 }

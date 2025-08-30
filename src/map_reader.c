@@ -81,71 +81,69 @@ static void	fill_map(char *map_name, char **map)
 	close(fd);
 }
 
-void complete_map(char **map)
+void	complete_map(char **map)
 {
-    int		i;
-    int		max_len;
-    int		j;
-    char	*new_line;
+	int		i;
+	int		max_len;
+	int		j;
+	int		len;
+	char	*new_line;
 
-    max_len = 0;
-    i = 6;
-    while (map[++i])
-    {
-        int len = ft_strlen(map[i]);
-        while (len > 0 && (map[i][len - 1] == '\n' || map[i][len - 1] == '\r'))
-            len--;
-        if (len > max_len)
-            max_len = len;
-    }
-    i = 7;
-    while (map[i])
-    {
-        int len = ft_strlen(map[i]);
-        while (len > 0 && (map[i][len - 1] == '\n' || map[i][len - 1] == '\r'))
-            len--;
-        if (len < max_len)
-        {
-            new_line = malloc(max_len + 2);
-            if (!new_line)
-                return;
-            for (j = 0; j < len; j++)
-                new_line[j] = map[i][j];
-            while (j < max_len)
-                new_line[j++] = ' ';
-            new_line[j++] = '\n';
-            new_line[j] = '\0';
-            free(map[i]);
-            map[i] = new_line;
-        }
-        i++;
-    }
+	max_len = 0;
+	i = 6;
+	while (map[++i] && map[6])
+	{
+		len = ft_strlen(map[i]);
+		while (len > 0 && (map[i][len - 1] == '\n' || map[i][len - 1] == '\r'))
+			len--;
+		if (len > max_len)
+			max_len = len;
+	}
+	i = 7;
+	while (map[i] && map[6])
+	{
+		len = ft_strlen(map[i]);
+		while (len > 0 && (map[i][len - 1] == '\n' || map[i][len - 1] == '\r'))
+			len--;
+		if (len < max_len)
+		{
+			new_line = malloc(max_len + 2);
+			if (!new_line)
+				return ;
+			for (j = 0; j < len; j++)
+				new_line[j] = map[i][j];
+			while (j < max_len)
+				new_line[j++] = ' ';
+			new_line[j++] = '\n';
+			new_line[j] = '\0';
+			free(map[i]);
+			map[i] = new_line;
+		}
+		i++;
+	}
 }
-
 
 bool	map_reader(char *map_name, t_game *game)
 {
-	char	*route_map;
 	int		count_lines;
 	size_t	len;
 
 	if (!(ft_strnstr(".cub", &map_name[ft_strlen(map_name) - 4], 4)))
-		return (0);
+		return (ft_printf("Error\nExtension must be .cub\n"), 0);
 	len = ft_strlen("maps/") + ft_strlen(map_name) + 1;
-	route_map = malloc(len * sizeof(char));
-	if (!route_map)
-		return (0);
-	route_map[0] = '\0';
-	ft_strlcat(route_map, "maps/", len);
-	ft_strlcat(route_map, map_name, len);
-	count_lines = map_lines(route_map);
+	game->route_map = malloc(len * sizeof(char));
+	if (!game->route_map)
+		return (ft_printf("(Error\nError malloc\n"), 0);
+	game->route_map[0] = '\0';
+	ft_strlcat(game->route_map, "maps/", len);
+	ft_strlcat(game->route_map, map_name, len);
+	count_lines = map_lines(game->route_map);
 	if (count_lines == -1)
-		return (free(route_map), 0);
+		return (ft_printf("Error\nMap not found\n"), 0);
 	game->map = malloc((count_lines + 1) * sizeof(char *));
 	if (!game->map)
-		return (free(route_map), 0);
-	fill_map(route_map, game->map);
+		return (ft_printf("(Error\nError malloc\n"), 0);
+	fill_map(game->route_map, game->map);
 	complete_map(game->map);
-	free(route_map);
 	return (1);
 }

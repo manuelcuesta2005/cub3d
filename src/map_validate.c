@@ -47,7 +47,8 @@ static bool	validate_limits(t_game *game)
 		while (j < lim_j)
 		{
 			if (i == 0 || i == lim_i || j == 0 || j == lim_j - 1)
-				if (game->map && game->map[i][j] != ' ' && game->map[i][j] != '1')
+				if (game->map && game->map[i][j] != ' '
+					&& game->map[i][j] != '1')
 					return (0);
 			j++;
 		}
@@ -99,7 +100,6 @@ static bool	validate_space(char **mp, int x, int y, int width, int height)
 	return (1);
 }
 
-
 static bool	validate_spaces(t_game *game)
 {
 	int	i;
@@ -137,7 +137,7 @@ static int	validate_chars(t_game *game, char **map, bool ini)
 				ini = true;
 			else if (!(map[i][j] == '\n' || map[i][j] == ' '
 					|| map[i][j] == '1' || map[i][j] == '0'))
-					return (0);
+				return (0);
 			j++;
 		}
 		i++;
@@ -151,16 +151,16 @@ bool	map_validate(t_game *game)
 {
 	calculate_sizes(game->map, game);
 	if (!validate_limits(game))
-		{
-			ft_printf("Error\nLimits must be walls or spaces.\n");
-			return (0);
-		}
+	{
+		ft_printf("Error\nLimits must be walls or spaces\n");
+		return (0);
+	}
 	if (!validate_spaces(game))
-		{
-			ft_printf("Error\nSpaces must be surrounded by walls or spaces.\n");
-			return (0);
-		}
+	{
+		ft_printf("Error\nSpaces must be surrounded by walls or spaces\n");
+		return (0);
+	}
 	if (!validate_chars(game, game->map, false))
-		return (ft_printf("Error\nCharacters map are invalid.\n"), 0);
+		return (ft_printf("Error\nCharacters map are invalid\n"), 0);
 	return (1);
 }

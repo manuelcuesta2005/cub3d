@@ -35,83 +35,83 @@
 
 typedef struct s_rgb
 {
-	int r;
-	int g;
-	int b;
-} t_rgb;
+	int	r;
+	int	g;
+	int	b;
+}		t_rgb;
 
 typedef struct s_cast
 {
-	int hit;
-	int mapX;
-	int mapY;
-	int side;
-	int textureX;
-	int line_height;
-	double pov;
-	double wallX;
-	double stepX;
-	double stepY;
-	double cameraX;
-	double rayDirX;
-	double rayDirY;
-	double sideDistX;
-	double sideDistY;
-	double deltaDistY;
-	double deltaDistX;
-	double perpWallDist;
-} t_cast;
+	int		hit;
+	int		mapX;
+	int		mapY;
+	int		side;
+	int		textureX;
+	int		line_height;
+	double	pov;
+	double	wallX;
+	double	stepX;
+	double	stepY;
+	double	cameraX;
+	double	rayDirX;
+	double	rayDirY;
+	double	sideDistX;
+	double	sideDistY;
+	double	deltaDistY;
+	double	deltaDistX;
+	double	perpWallDist;
+}		t_cast;
 
 typedef struct s_player
 {
-	double axisX;
-	double axisY;
-	double visionX;
-	double visionY;
-	double planeX;
-	double planeY;
-	double moveSpeed;
-	double rotateSpeed;
-} t_player;
+	double	axisX;
+	double	axisY;
+	double	visionX;
+	double	visionY;
+	double	planeX;
+	double	planeY;
+	double	moveSpeed;
+	double	rotateSpeed;
+}		t_player;
 
 typedef struct s_img
 {
-	void *img;
-	char *addr;
-	int bpp;
-	int line_length;
-	int endian;
-	int height;
-	int width;
-} t_img;
+	void	*img;
+	char	*addr;
+	int		bpp;
+	int		line_length;
+	int		endian;
+	int		height;
+	int		width;
+}		t_img;
 
 typedef struct s_game
 {
-	char *tex_no;
-	char *tex_so;
-	char *tex_we;
-	char *tex_ea;
-	t_rgb floor;
-	t_rgb ceiling;
-	t_img textures[4];
-	char **map;
-	void *mlx;
-	void *win;
-	int width;
-	int height;
-	int player_x;
-	int player_y;
-	t_player *player;
-	t_cast *cast;
-	t_img *img;
-} t_game;
+	char		*route_map;
+	char		*tex_no;
+	char		*tex_so;
+	char		*tex_we;
+	char		*tex_ea;
+	t_rgb		floor;
+	t_rgb		ceiling;
+	t_img		textures[4];
+	char		**map;
+	void		*mlx;
+	void		*win;
+	int			width;
+	int			height;
+	int			player_x;
+	int			player_y;
+	t_player	*player;
+	t_cast		*cast;
+	t_img		*img;
+}		t_game;
 
 bool	map_reader(char *map_name, t_game *game);
 bool	map_validate(t_game *game);
 bool	map_checker(t_game *game);
 int		map_header(t_game *game);
 void	load_images(t_game *game);
-
 
 int		handle_exit(t_game *game);
 
@@ -132,8 +132,7 @@ void	draw_columns(t_game *game, t_cast *cast, int x);
 void	screen_columns(t_player *player, t_game *game, t_cast *cast);
 void	draw_background(t_game *game);
 void	start_position(t_player *player, const char dir);
-void	move_player(t_game *game, t_player *player, double axisX,
-		double axisY);
+void	move_player(t_game *game, t_player *player, double axisX, double axisY);
 t_img	*assign_texture(t_game *game, t_cast *cast);
 double	get_wall_X(t_cast *cast, t_player *player);
 
