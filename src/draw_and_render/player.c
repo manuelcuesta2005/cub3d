@@ -6,7 +6,7 @@
 /*   By: mpico-bu <mpico-bu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 12:03:14 by mcuesta-          #+#    #+#             */
-/*   Updated: 2025/08/30 05:07:09 by mpico-bu         ###   ########.fr       */
+/*   Updated: 2025/08/30 06:02:41 by mpico-bu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,8 @@ int	key_hook(int keycode, t_game *game)
 		rotate_camera(game->player, game->player->rotateSpeed);
 	else if (keycode == KEY_LEFT)
 		rotate_camera(game->player, -game->player->rotateSpeed);
-	// else if (keycode == 65307)
-	// 	close_window(game, "Close the game...");
+	else if (keycode == 65307)
+		handle_exit(game);
 	return (0);
 }
 

@@ -15,7 +15,7 @@
 
 #include "../inc/cub3d.h"
 
-void ft_free_game(t_game *game)
+void	ft_free_game(t_game *game)
 {
 	if (game->route_map)
 		free(game->route_map);
@@ -54,8 +54,8 @@ int	handle_exit(t_game *game)
 
 static void	find_player(char **map, t_game *game)
 {
-	int i;
-	int j;
+	int	i;
+	int	j;
 
 	i = 0;
 	j = 0;
@@ -99,7 +99,6 @@ void	map_main(char *map_name, t_game *game)
 	find_player(game->map, game);
 }
 
-
 static void	mlx_main(t_game *game)
 {
 	game->mlx = mlx_init();
@@ -128,7 +127,7 @@ static void	mlx_main(t_game *game)
 
 int	main(int argc, char **argv)
 {
-	t_game *game;
+	t_game	*game;
 
 	if (argc != 2)
 		return (ft_printf("Error\nUsage: ./cub3D <map>\n"), 1);
