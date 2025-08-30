@@ -6,7 +6,7 @@
 /*   By: mpico-bu <mpico-bu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 12:15:55 by mcuesta-          #+#    #+#             */
-/*   Updated: 2025/08/30 08:33:36 by mpico-bu         ###   ########.fr       */
+/*   Updated: 2025/08/30 09:11:05 by mpico-bu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ static int	p_text(char **dst, char *line)
 {
 	char	*path;
 
+	if (*dst)
+		return (0);
 	path = ft_strtrim(line + 3, " \n\r");
 	if (!path)
 		return (0);
@@ -58,16 +60,6 @@ static int	p_rgb(t_rgb *color, char *line)
 	return (1);
 }
 
-static int	map_height(char **map)
-{
-	int	i;
-
-	i = 0;
-	while (map[i])
-		i++;
-	return (i);
-}
-
 void	update_map_remove_header(t_game *game)
 {
 	int		total;
@@ -94,7 +86,6 @@ void	update_map_remove_header(t_game *game)
 	game->map = new_map;
 }
 
-
 int	map_header(t_game *game)
 {
 	int		i;
@@ -120,7 +111,5 @@ int	map_header(t_game *game)
 			found++;
 		i++;
 	}
-	if (found == 6)
-		return (update_map_remove_header(game), 1);
-	return (0);
+	return (update_map_remove_header(game), found == 6);
 }

@@ -12,24 +12,6 @@
 
 #include "../inc/cub3d.h"
 
-static void	calculate_sizes(char **map, t_game *game)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	while (map[i])
-	{
-		j = 0;
-		while (map[i][j])
-			j++;
-		if (i == 0)
-			game->width = j - 1;
-		i++;
-	}
-	game->height = i;
-}
-
 static bool	validate_limits(t_game *game)
 {
 	int	i;
@@ -57,36 +39,13 @@ static bool	validate_limits(t_game *game)
 	return (1);
 }
 
-/*
-static bool	validate_space(char **mp, int x, int y, int width, int height)
+static bool	validate_space(t_game *game, char **mp, int x, int y)
 {
-	if (y > 0 && mp[y - 1][x] && mp[y - 1][x] != ' ' && mp[y - 1][x] != '1')
-		return (0);
-	if (y + 1 < height
-		&& mp[y + 1][x] && mp[y + 1][x] != ' ' && mp[y + 1][x] != '1')
-		return (0);
-	if (x > 0 && mp[y][x - 1] && mp[y][x - 1] != ' ' && mp[y][x - 1] != '1')
-		return (0);
-	if (x + 1 < width
-		&& mp[y][x + 1] && mp[y][x + 1] != ' ' && mp[y][x + 1] != '1')
-		return (0);
-	if (y > 0 && x > 0 && mp[y - 1][x - 1] != ' ' && mp[y - 1][x - 1] != '1')
-		return (0);
-	if (y + 1 < height && x > 0
-		&& mp[y + 1][x - 1] != ' ' && mp[y + 1][x - 1] != '1')
-		return (0);
-	if (y > 0 && x + 1 < width
-		&& mp[y - 1][x + 1] != ' ' && mp[y - 1][x + 1] != '1')
-		return (0);
-	if (y + 1 < height && x + 1 < width
-		&& mp[y + 1][x + 1] != ' ' && mp[y + 1][x + 1] != '1')
-		return (0);
-	return (1);
-}
-*/
+	int	height;
+	int	width;
 
-static bool	validate_space(char **mp, int x, int y, int width, int height)
-{
+	width = game->width;
+	height = game->height;
 	if (y > 0 && mp[y - 1][x] && mp[y - 1][x] != ' ' && mp[y - 1][x] != '1')
 		return (0);
 	if (y + 1 < height
@@ -112,7 +71,7 @@ static bool	validate_spaces(t_game *game)
 		while (game->map[i][j] && j < game->width)
 		{
 			if (game->map[i][j] == ' ')
-				if (!validate_space(game->map, j, i, game->width, game->height))
+				if (!validate_space(game, game->map, j, i))
 					return (0);
 			j++;
 		}

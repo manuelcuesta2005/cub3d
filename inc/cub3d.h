@@ -112,8 +112,13 @@ bool	map_reader(char *map_name, t_game *game);
 bool	map_validate(t_game *game);
 bool	map_checker(t_game *game);
 int		map_header(t_game *game);
+int		map_height(char **map);
+void	find_player(char **map, t_game *game);
+void	calculate_sizes(char **map, t_game *game);
+bool	count_header(t_game *game);
+void	complete_map(t_game *game, char **map);
 void	load_images(t_game *game);
-
+void	ft_free_game(t_game *game);
 int		handle_exit(t_game *game);
 
 // player and raycasting

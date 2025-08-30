@@ -25,6 +25,9 @@ SRC = 	src/main.c \
 		src/map_reader.c \
 		src/map_textures.c \
 		src/map_validate.c \
+		src/map_utils.c \
+		src/map_complete.c \
+		src/exit.c \
 		src/draw_and_render/draw.c \
 		src/draw_and_render/player.c \
 		src/draw_and_render/raycasting.c \

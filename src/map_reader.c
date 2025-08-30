@@ -81,64 +81,6 @@ static void	fill_map(char *map_name, char **map)
 	close(fd);
 }
 
-void	complete_map(t_game *game, char **map)
-{
-	int		i;
-	int		max_len;
-	int		j;
-	int		len;
-	char	*new_line;
-
-	max_len = 0;
-	i = game->lines_header - 1;
-	while (map[++i])
-	{
-		len = ft_strlen(map[i]);
-		while (len > 0 && (map[i][len - 1] == '\n' || map[i][len - 1] == '\r'))
-			len--;
-		if (len > max_len)
-			max_len = len;
-	}
-	i = game->lines_header;
-	while (map[i])
-	{
-		len = ft_strlen(map[i]);
-		while (len > 0 && (map[i][len - 1] == '\n' || map[i][len - 1] == '\r'))
-			len--;
-		if (len < max_len)
-		{
-			new_line = malloc(max_len + 2);
-			if (!new_line)
-				return ;
-			for (j = 0; j < len; j++)
-				new_line[j] = map[i][j];
-			while (j < max_len)
-				new_line[j++] = ' ';
-			new_line[j++] = '\n';
-			new_line[j] = '\0';
-			free(map[i]);
-			map[i] = new_line;
-		}
-		i++;
-	}
-}
-
-
-void count_header(t_game *game)
-{
-	int	i;
-
-	i = 0;
-	while (game->map[i])
-	{
-		if (!ft_strncmp(game->map[i], " ", 1) || !ft_strncmp(game->map[i], "0", 1) || !ft_strncmp(game->map[i], "1", 1))
-			break ;
-		i++;
-	}
-	game->lines_header = i - 1;
-	ft_printf("Lines: %i\n", game->lines_header);
-}
-
 bool	map_reader(char *map_name, t_game *game)
 {
 	int		count_lines;
@@ -149,7 +91,7 @@ bool	map_reader(char *map_name, t_game *game)
 	len = ft_strlen("maps/") + ft_strlen(map_name) + 1;
 	game->route_map = malloc(len * sizeof(char));
 	if (!game->route_map)
-		return (ft_printf("(Error\nError malloc\n"), 0);
+		return (ft_printf("Error\nError malloc\n"), 0);
 	game->route_map[0] = '\0';
 	ft_strlcat(game->route_map, "maps/", len);
 	ft_strlcat(game->route_map, map_name, len);
@@ -158,9 +100,10 @@ bool	map_reader(char *map_name, t_game *game)
 		return (ft_printf("Error\nMap not found\n"), 0);
 	game->map = malloc((count_lines + 1) * sizeof(char *));
 	if (!game->map)
-		return (ft_printf("(Error\nError malloc\n"), 0);
+		return (ft_printf("Error\nError malloc\n"), 0);
 	fill_map(game->route_map, game->map);
-	count_header(game);
+	if (!count_header(game))
+		return (ft_printf("Error\nHeader not valid\n"), 0);
 	complete_map(game, game->map);
 	return (1);
 }
