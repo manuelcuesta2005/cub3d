@@ -107,17 +107,17 @@ int	map_header(t_game *game)
 	i = 0;
 	while (i < 7 && game->map[i])
 	{
-		if (!ft_strncmp(map[i], "NO ", 3) && p_text(&game->tex_no, map[i]))
+		if (!ft_strncmp(map[i], "NO ", 3) && !game->tex_no && p_text(&game->tex_no, map[i]))
 			found++;
-		else if (!ft_strncmp(map[i], "SO ", 3) && p_text(&game->tex_so, map[i]))
+		else if (!ft_strncmp(map[i], "SO ", 3) && !game->tex_so && p_text(&game->tex_so, map[i]))
 			found++;
-		else if (!ft_strncmp(map[i], "WE ", 3) && p_text(&game->tex_we, map[i]))
+		else if (!ft_strncmp(map[i], "WE ", 3) && !game->tex_we && p_text(&game->tex_we, map[i]))
 			found++;
-		else if (!ft_strncmp(map[i], "EA ", 3) && p_text(&game->tex_ea, map[i]))
+		else if (!ft_strncmp(map[i], "EA ", 3) && !game->tex_ea && p_text(&game->tex_ea, map[i]))
 			found++;
-		else if (!ft_strncmp(map[i], "F ", 2) && p_rgb(&game->floor, map[i]))
+		else if (!ft_strncmp(map[i], "F ", 2) && game->floor.r == -1 && p_rgb(&game->floor, map[i]))
 			found++;
-		else if (!ft_strncmp(map[i], "C ", 2) && p_rgb(&game->ceiling, map[i]))
+		else if (!ft_strncmp(map[i], "C ", 2) && game->ceiling.r == -1 && p_rgb(&game->ceiling, map[i]))
 			found++;
 		i++;
 	}
