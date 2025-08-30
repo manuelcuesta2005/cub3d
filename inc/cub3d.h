@@ -102,6 +102,7 @@ typedef struct s_game
 	int			height;
 	int			player_x;
 	int			player_y;
+	int			lines_header;
 	t_player	*player;
 	t_cast		*cast;
 	t_img		*img;

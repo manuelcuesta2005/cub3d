@@ -6,7 +6,7 @@
 /*   By: mpico-bu <mpico-bu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/23 12:15:55 by mcuesta-          #+#    #+#             */
-/*   Updated: 2025/08/30 05:50:47 by mpico-bu         ###   ########.fr       */
+/*   Updated: 2025/08/30 08:26:51 by mpico-bu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,12 +76,10 @@ void	update_map_remove_header(t_game *game)
 	char	**new_map;
 
 	total = map_height(game->map);
-	if (total <= 8)
-		return ;
-	new_map = malloc((total - 8 + 1) * sizeof(char *));
+	new_map = malloc((total - game->lines_header) * sizeof(char *));
 	if (!new_map)
 		return ;
-	i = 8;
+	i = game->lines_header + 1;
 	j = 0;
 	while (game->map[i])
 	{
@@ -96,6 +94,7 @@ void	update_map_remove_header(t_game *game)
 	game->map = new_map;
 }
 
+
 int	map_header(t_game *game)
 {
 	int		i;
@@ -105,7 +104,7 @@ int	map_header(t_game *game)
 	map = game->map;
 	found = 0;
 	i = 0;
-	while (i < 7 && game->map[i])
+	while (i < game->lines_header && game->map[i])
 	{
 		if (!ft_strncmp(map[i], "NO ", 3) && p_text(&game->tex_no, map[i]))
 			found++;

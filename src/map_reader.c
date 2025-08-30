@@ -81,7 +81,7 @@ static void	fill_map(char *map_name, char **map)
 	close(fd);
 }
 
-void	complete_map(char **map)
+void	complete_map(t_game *game, char **map)
 {
 	int		i;
 	int		max_len;
@@ -90,8 +90,8 @@ void	complete_map(char **map)
 	char	*new_line;
 
 	max_len = 0;
-	i = 6;
-	while (map[++i] && map[6])
+	i = game->lines_header - 1;
+	while (map[++i])
 	{
 		len = ft_strlen(map[i]);
 		while (len > 0 && (map[i][len - 1] == '\n' || map[i][len - 1] == '\r'))
@@ -99,8 +99,8 @@ void	complete_map(char **map)
 		if (len > max_len)
 			max_len = len;
 	}
-	i = 7;
-	while (map[i] && map[6])
+	i = game->lines_header;
+	while (map[i])
 	{
 		len = ft_strlen(map[i]);
 		while (len > 0 && (map[i][len - 1] == '\n' || map[i][len - 1] == '\r'))
@@ -121,6 +121,22 @@ void	complete_map(char **map)
 		}
 		i++;
 	}
+}
+
+
+void count_header(t_game *game)
+{
+	int	i;
+
+	i = 0;
+	while (game->map[i])
+	{
+		if (!ft_strncmp(game->map[i], " ", 1) || !ft_strncmp(game->map[i], "0", 1) || !ft_strncmp(game->map[i], "1", 1))
+			break ;
+		i++;
+	}
+	game->lines_header = i - 1;
+	ft_printf("Lines: %i\n", game->lines_header);
 }
 
 bool	map_reader(char *map_name, t_game *game)
@@ -144,6 +160,7 @@ bool	map_reader(char *map_name, t_game *game)
 	if (!game->map)
 		return (ft_printf("(Error\nError malloc\n"), 0);
 	fill_map(game->route_map, game->map);
-	complete_map(game->map);
+	count_header(game);
+	complete_map(game, game->map);
 	return (1);
 }
