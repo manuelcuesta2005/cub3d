@@ -1,24 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   mlx_hooks.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mpico-bu <mpico-bu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/07 22:42:25 by mpico-bu          #+#    #+#             */
-/*   Updated: 2025/04/09 19:03:25 by mpico-bu         ###   ########.fr       */
+/*   Created: 2025/08/30 10:00:00 by mpico-bu          #+#    #+#             */
+/*   Updated: 2025/08/30 10:00:00 by mpico-bu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/cub3d.h"
 
-int	main(int argc, char **argv)
-{
-	t_game	game;
+static t_game	*g_game;
 
-	if (argc != 2)
-		return (ft_printf("Error\nUsage: ./cub3D <map>\n"), 1);
-	map_main(argv[1], &game);
-	mlx_main(&game);
+int	handle_close(void)
+{
+	handle_exit(g_game);
 	return (0);
+}
+
+int	render_loop_wrapper(void)
+{
+	return (render_loop(g_game));
+}
+
+void	set_game_ptr(t_game *game)
+{
+	g_game = game;
 }

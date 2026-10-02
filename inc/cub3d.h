@@ -1,13 +1,10 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   so_long.h                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+
-	+:+     */
-/*   By: mpico-bu <mpico-bu@student.42.fr>          +#+  +:+
-	+#+        */
-/*                                                +#+#+#+#+#+
-	+#+           */
+/*   cub3d.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mpico-bu <mpico-bu@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/07 22:49:01 by mpico-bu          #+#    #+#             */
 /*   Updated: 2025/04/09 16:36:13 by mpico-bu         ###   ########.fr       */
 /*                                                                            */
@@ -16,11 +13,13 @@
 #ifndef CUB3D_H
 # define CUB3D_H
 
-# include "../libft/ft_printf.h"
-# include "../libft/libft.h"
-# include "../minilibx-linux/mlx.h"
+# include "libft.h"
+# include "ft_printf.h"
+# include "get_next_line.h"
+# include "mlx.h"
 # include <math.h>
 # include <stdbool.h>
+# include <fcntl.h>
 
 # define PI 3.14159265358979323846
 # define SCREEN_W 1080
@@ -44,35 +43,35 @@ typedef struct s_rgb
 typedef struct s_cast
 {
 	int		hit;
-	int		mapX;
-	int		mapY;
+	int		map_x;
+	int		map_y;
 	int		side;
-	int		textureX;
+	int		texture_x;
 	int		line_height;
 	double	pov;
-	double	wallX;
-	double	stepX;
-	double	stepY;
-	double	cameraX;
-	double	rayDirX;
-	double	rayDirY;
-	double	sideDistX;
-	double	sideDistY;
-	double	deltaDistY;
-	double	deltaDistX;
-	double	perpWallDist;
+	double	wall_x;
+	double	step_x;
+	double	step_y;
+	double	camera_x;
+	double	ray_dir_x;
+	double	ray_dir_y;
+	double	side_dist_x;
+	double	side_dist_y;
+	double	delta_dist_y;
+	double	delta_dist_x;
+	double	perp_wall_dist;
 }		t_cast;
 
 typedef struct s_player
 {
-	double	axisX;
-	double	axisY;
-	double	visionX;
-	double	visionY;
-	double	planeX;
-	double	planeY;
-	double	moveSpeed;
-	double	rotateSpeed;
+	double	axis_x;
+	double	axis_y;
+	double	vision_x;
+	double	vision_y;
+	double	plane_x;
+	double	plane_y;
+	double	move_speed;
+	double	rotate_speed;
 }		t_player;
 
 typedef struct s_img
@@ -120,27 +119,36 @@ bool	count_header(t_game *game);
 void	complete_map(t_game *game, char **map);
 void	load_images(t_game *game);
 void	ft_free_game(t_game *game);
-int		handle_exit(t_game *game);
+int		handle_exit(void *param);
+void	init_game(t_game *game);
+void	map_main(char *map_name, t_game *game);
+void	mlx_main(t_game *game);
+int		file_exists(char *path);
+int		p_text(char **dst, char *line);
+int		p_rgb(t_rgb *color, char *line);
 
 // player and raycasting
 int		set_rgb(t_rgb *background);
-int		render_loop(t_game *game);
+int		render_loop(void *param);
 int		get_texture(t_img *img, int x, int y);
-int		can_move(t_game *game, double newX, double newY);
-int		key_hook(int keycode, t_game *game);
+int		can_move(t_game *game, double new_x, double new_y);
+int		key_hook(int keycode, void *param);
 void	load_images(t_game *game);
 void	paint_pixels(t_img *img, int x, int y, int color);
-void	rotate_camera(t_player *player, double rotateSpeed);
+void	rotate_camera(t_player *player, double rotate_speed);
 void	init_player(t_player **player, int x, int y, const char direction);
 void	get_steps(t_player *player, t_cast *cast);
-void	DDA_algorhitm(t_game *game, t_cast *cast);
+void	dda_algorithm(t_game *game, t_cast *cast);
 void	set_distance(t_cast *cast, t_player *player);
 void	draw_columns(t_game *game, t_cast *cast, int x);
 void	screen_columns(t_player *player, t_game *game, t_cast *cast);
 void	draw_background(t_game *game);
 void	start_position(t_player *player, const char dir);
-void	move_player(t_game *game, t_player *player, double axisX, double axisY);
+void	move_player(t_game *game, t_player *player, double axis_x,
+			double axis_y);
 t_img	*assign_texture(t_game *game, t_cast *cast);
-double	get_wall_X(t_cast *cast, t_player *player);
+double	get_wall_x(t_cast *cast, t_player *player);
+void	cleanup_mlx(t_game *game);
+void	init_mlx_data(t_game *game);
 
 #endif

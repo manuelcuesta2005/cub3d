@@ -67,8 +67,6 @@ static int	pad_to_len(char **line_ptr, int target)
 	return (1);
 }
 
-// función principal ----------------------------------------------------
-
 void	complete_map(t_game *game, char **map)
 {
 	int	i;

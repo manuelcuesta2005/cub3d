@@ -1,0 +1,29 @@
+# Object files
+obj/
+*.o
+
+# Binaries
+cub3D
+cub3D_bonus
+*.out
+
+# Libraries
+*.a
+
+# Dependencies
+.deps/
+
+# Old directories (now cloned from GitHub)
+libft/
+minilibx-linux/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+*~
+*.swp
+*.swo
+.vscode/
+.idea/

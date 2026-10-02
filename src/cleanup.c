@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exit.c                                             :+:      :+:    :+:   */
+/*   cleanup.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mpico-bu <mpico-bu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,50 +12,29 @@
 
 #include "../inc/cub3d.h"
 
-void	ft_free_game(t_game *game)
+void	cleanup_mlx(t_game *game)
 {
-	if (game->route_map)
-		free(game->route_map);
-	if (game->tex_ea)
-		free(game->tex_ea);
-	if (game->tex_no)
-		free(game->tex_no);
-	if (game->tex_so)
-		free(game->tex_so);
-	if (game->tex_we)
-		free(game->tex_we);
-	if (game->map)
-		ft_matrix_free(&game->map);
-	free(game);
+	if (game->textures[0].img)
+		mlx_destroy_image(game->mlx, game->textures[0].img);
+	if (game->textures[1].img)
+		mlx_destroy_image(game->mlx, game->textures[1].img);
+	if (game->textures[2].img)
+		mlx_destroy_image(game->mlx, game->textures[2].img);
+	if (game->textures[3].img)
+		mlx_destroy_image(game->mlx, game->textures[3].img);
+	if (game->img && game->img->img)
+		mlx_destroy_image(game->mlx, game->img->img);
 }
 
-static void	free_structs(t_game *game)
+void	init_mlx_data(t_game *game)
 {
-	if (game->player)
-		free(game->player);
-	if (game->cast)
-		free(game->cast);
-	if (game->img)
-		free(game->img);
-}
-
-int	handle_exit(void *param)
-{
-	t_game	*game;
-
-	game = (t_game *)param;
-	if (game)
-	{
-		if (game->mlx)
-		{
-			if (game->win)
-				mlx_destroy_window(game->mlx, game->win);
-			cleanup_mlx(game);
-			mlx_destroy_display(game->mlx);
-			free(game->mlx);
-		}
-		free_structs(game);
-		ft_free_game(game);
-	}
-	exit(0);
+	game->mlx = NULL;
+	game->win = NULL;
+	game->player = NULL;
+	game->cast = NULL;
+	game->img = NULL;
+	game->textures[0].img = NULL;
+	game->textures[1].img = NULL;
+	game->textures[2].img = NULL;
+	game->textures[3].img = NULL;
 }

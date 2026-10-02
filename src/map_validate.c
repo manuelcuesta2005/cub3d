@@ -19,7 +19,6 @@ static bool	validate_limits(t_game *game)
 	int	lim_i;
 	int	lim_j;
 
-	i = 0;
 	lim_i = game->height - 1;
 	lim_j = game->width;
 	i = 0;

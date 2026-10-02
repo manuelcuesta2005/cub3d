@@ -12,67 +12,77 @@
 
 #include "../../inc/cub3d.h"
 
-int	can_move(t_game *game, double newX, double newY)
+int	can_move(t_game *game, double new_x, double new_y)
 {
 	double	margin;
 
 	margin = 0.2;
-	if (newX < margin || newX >= game->width - margin || newY < margin || newY >= game->height - margin)
+	if (new_x < margin || new_x >= game->width - margin
+		|| new_y < margin || new_y >= game->height - margin)
 		return (0);
-	if (game->map[(int)newY][(int)newX] == '1' || game->map[(int)(newY + margin)][(int)newX] == '1' ||
-		game->map[(int)(newY - margin)][(int)newX] == '1' ||
-		game->map[(int)newY][(int)(newX + margin)] == '1' ||
-		game->map[(int)newY][(int)(newX - margin)] == '1')
+	if (game->map[(int)new_y][(int)new_x] == '1'
+		|| game->map[(int)(new_y + margin)][(int)new_x] == '1'
+		|| game->map[(int)(new_y - margin)][(int)new_x] == '1'
+		|| game->map[(int)new_y][(int)(new_x + margin)] == '1'
+		|| game->map[(int)new_y][(int)(new_x - margin)] == '1')
 		return (0);
 	return (1);
 }
 
-void	move_player(t_game *game, t_player *player, double axisX, double axisY)
+void	move_player(t_game *game, t_player *player, double axis_x,
+			double axis_y)
 {
-	double	positionX;
-	double	positionY;
+	double	position_x;
+	double	position_y;
 
-	positionX = player->axisX + axisX * player->moveSpeed;
-	positionY = player->axisY + axisY * player->moveSpeed;
-	if (can_move(game, positionX, player->axisY))
-		player->axisX = positionX;
-	if (can_move(game, player->axisX, positionY))
-		player->axisY = positionY;
+	position_x = player->axis_x + axis_x * player->move_speed;
+	position_y = player->axis_y + axis_y * player->move_speed;
+	if (can_move(game, position_x, player->axis_y))
+		player->axis_x = position_x;
+	if (can_move(game, player->axis_x, position_y))
+		player->axis_y = position_y;
 }
 
-void	rotate_camera(t_player *player, double rotateSpeed)
+void	rotate_camera(t_player *player, double rotate_speed)
 {
 	double	sin_a;
 	double	cos_a;
-	double	old_dirX;
-	double	old_planeX;
+	double	old_dir_x;
+	double	old_plane_x;
 
-	sin_a = sin(rotateSpeed);
-	cos_a = cos(rotateSpeed);
-	old_dirX = player->visionX;
-	player->visionX = player->visionX * cos_a - player->visionY * sin_a;
-	player->visionY = old_dirX * sin_a + player->visionY * cos_a;
-	old_planeX = player->planeX;
-	player->planeX = player->planeX * cos_a - player->planeY * sin_a;
-	player->planeY = old_planeX * sin_a + player->planeY * cos_a;
+	sin_a = sin(rotate_speed);
+	cos_a = cos(rotate_speed);
+	old_dir_x = player->vision_x;
+	player->vision_x = player->vision_x * cos_a - player->vision_y * sin_a;
+	player->vision_y = old_dir_x * sin_a + player->vision_y * cos_a;
+	old_plane_x = player->plane_x;
+	player->plane_x = player->plane_x * cos_a - player->plane_y * sin_a;
+	player->plane_y = old_plane_x * sin_a + player->plane_y * cos_a;
 }
 
-int	key_hook(int keycode, t_game *game)
+int	key_hook(int keycode, void *param)
 {
+	t_game	*game;
+
+	game = (t_game *)param;
 	if (!game->player)
 		return (0);
 	if (keycode == KEY_W)
-		move_player(game, game->player, game->player->visionX, game->player->visionY);
+		move_player(game, game->player, game->player->vision_x,
+			game->player->vision_y);
 	else if (keycode == KEY_A)
-		move_player(game, game->player, -game->player->visionX, -game->player->visionY);
+		move_player(game, game->player, -game->player->vision_x,
+			-game->player->vision_y);
 	else if (keycode == KEY_S)
-		move_player(game, game->player, -game->player->planeX, -game->player->planeY);
+		move_player(game, game->player, -game->player->plane_x,
+			-game->player->plane_y);
 	else if (keycode == KEY_D)
-		move_player(game, game->player, game->player->planeX, game->player->planeY);
+		move_player(game, game->player, game->player->plane_x,
+			game->player->plane_y);
 	else if (keycode == KEY_RIGHT)
-		rotate_camera(game->player, game->player->rotateSpeed);
+		rotate_camera(game->player, game->player->rotate_speed);
 	else if (keycode == KEY_LEFT)
-		rotate_camera(game->player, -game->player->rotateSpeed);
+		rotate_camera(game->player, -game->player->rotate_speed);
 	else if (keycode == 65307)
 		handle_exit(game);
 	return (0);
@@ -82,17 +92,17 @@ void	init_player(t_player **player, int x, int y, const char direction)
 {
 	(*player) = malloc(sizeof(t_player));
 	if (!(*player))
-		return;
-	(*player)->axisX = x + 0.5;
-	(*player)->axisY = y + 0.5;
-	(*player)->moveSpeed = 0.05;
-	(*player)->rotateSpeed = 0.05;
+		return ;
+	(*player)->axis_x = x + 0.5;
+	(*player)->axis_y = y + 0.5;
+	(*player)->move_speed = 0.05;
+	(*player)->rotate_speed = 0.05;
 	if (direction == 'N')
 	{
-		(*player)->visionX = 0;
-		(*player)->visionY = -1;
-		(*player)->planeX = 0.66;
-		(*player)->planeY = 0;
+		(*player)->vision_x = 0;
+		(*player)->vision_y = -1;
+		(*player)->plane_x = 0.66;
+		(*player)->plane_y = 0;
 	}
 	else
 		start_position(*player, direction);

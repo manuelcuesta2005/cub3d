@@ -14,46 +14,48 @@
 
 void	get_steps(t_player *player, t_cast *cast)
 {
-	if (cast->rayDirX < 0)
+	if (cast->ray_dir_x < 0)
 	{
-		cast->stepX = -1;
-		cast->sideDistX = (player->axisX - cast->mapX) * cast->deltaDistX;
+		cast->step_x = -1;
+		cast->side_dist_x = (player->axis_x - cast->map_x) * cast->delta_dist_x;
 	}
 	else
 	{
-		cast->stepX = 1;
-		cast->sideDistX = (cast->mapX + 1.0 - player->axisX) * cast->deltaDistX;
+		cast->step_x = 1;
+		cast->side_dist_x = (cast->map_x + 1.0 - player->axis_x)
+			* cast->delta_dist_x;
 	}
-	if (cast->rayDirY < 0)
+	if (cast->ray_dir_y < 0)
 	{
-		cast->stepY = -1;
-		cast->sideDistY = (player->axisY - cast->mapY) * cast->deltaDistY;
+		cast->step_y = -1;
+		cast->side_dist_y = (player->axis_y - cast->map_y) * cast->delta_dist_y;
 	}
 	else
 	{
-		cast->stepY = 1;
-		cast->sideDistY = (cast->mapY + 1.0 - player->axisY) * cast->deltaDistY;
+		cast->step_y = 1;
+		cast->side_dist_y = (cast->map_y + 1.0 - player->axis_y)
+			* cast->delta_dist_y;
 	}
 }
 
-void	DDA_algorhitm(t_game *game, t_cast *cast)
+void	dda_algorithm(t_game *game, t_cast *cast)
 {
 	cast->hit = 0;
 	while (!cast->hit)
 	{
-		if (cast->sideDistX < cast->sideDistY)
+		if (cast->side_dist_x < cast->side_dist_y)
 		{
-			cast->sideDistX += cast->deltaDistX;
-			cast->mapX += cast->stepX;
+			cast->side_dist_x += cast->delta_dist_x;
+			cast->map_x += cast->step_x;
 			cast->side = 0;
 		}
 		else
 		{
-			cast->sideDistY += cast->deltaDistY;
-			cast->mapY += cast->stepY;
+			cast->side_dist_y += cast->delta_dist_y;
+			cast->map_y += cast->step_y;
 			cast->side = 1;
 		}
-		if (game->map[cast->mapY][cast->mapX] == '1')
+		if (game->map[cast->map_y][cast->map_x] == '1')
 			cast->hit = 1;
 	}
 }
@@ -61,62 +63,11 @@ void	DDA_algorhitm(t_game *game, t_cast *cast)
 void	set_distance(t_cast *cast, t_player *player)
 {
 	if (cast->side == 0)
-		cast->perpWallDist = (cast->mapX - player->axisX + (1 - cast->stepX) / 2) / cast->rayDirX;
+		cast->perp_wall_dist = (cast->map_x - player->axis_x
+				+ (1 - cast->step_x) / 2) / cast->ray_dir_x;
 	else
-		cast->perpWallDist = (cast->mapY - player->axisY + (1 - cast->stepY) / 2) / cast->rayDirY;
-}
-
-static void	calc_limits(t_cast *cast, int *start, int *end)
-{
-	*start = -cast->line_height / 2 + SCREEN_H / 2;
-	if (*start < 0)
-		*start = 0;
-	*end = cast->line_height / 2 + SCREEN_H / 2;
-	if (*end >= SCREEN_H)
-		*end = SCREEN_H - 1;
-}
-
-static void	draw_tex_column(t_game *game, t_cast *cast, int x, t_img *tex)
-{
-	double	step;
-	double	tex_pos;
-	int		y;
-	int		tex_y;
-	int		color;
-	int		start;
-	int		end;
-
-	calc_limits(cast, &start, &end);
-	step = 1.0 * tex->height / cast->line_height;
-	tex_pos = (start - SCREEN_H / 2 + cast->line_height / 2) * step;
-	y = start;
-	while (y < end)
-	{
-		tex_y = (int)tex_pos % tex->height;
-		if (tex->height < 0)
-			tex_y += tex->height;
-		tex_pos += step;
-		color = get_texture(tex, cast->textureX, tex_y);
-		if (cast->side == 1)
-			color = (color >> 1) & 0x7F7F7F;
-		paint_pixels(game->img, x, y, color);
-		y++;
-	}
-}
-
-void	draw_columns(t_game *game, t_cast *cast, int x)
-{
-	double	wallX;
-	t_img	*tex;
-
-	cast->line_height = (int)(SCREEN_H / cast->perpWallDist);
-	tex = assign_texture(game, cast);
-	wallX = get_wall_X(cast, game->player);
-	cast->textureX = (int)(wallX * (double)tex->width);
-	if ((cast->side == 0 && cast->rayDirX > 0) ||
-		(cast->side == 1 && cast->rayDirY < 0))
-		cast->textureX = tex->width - cast->textureX - 1;
-	draw_tex_column(game, cast, x, tex);
+		cast->perp_wall_dist = (cast->map_y - player->axis_y
+				+ (1 - cast->step_y) / 2) / cast->ray_dir_y;
 }
 
 void	screen_columns(t_player *player, t_game *game, t_cast *cast)
@@ -126,15 +77,21 @@ void	screen_columns(t_player *player, t_game *game, t_cast *cast)
 	x = 0;
 	while (x < SCREEN_W)
 	{
-		cast->cameraX = 2 * x / (double)SCREEN_W - 1;
-		cast->rayDirX = player->visionX + player->planeX * cast->cameraX;
-		cast->rayDirY = player->visionY + player->planeY * cast->cameraX;
-		cast->mapX = (int)player->axisX;
-		cast->mapY = (int)player->axisY;
-		cast->deltaDistX = (cast->rayDirX == 0) ? 1e30 : fabs(1 / cast->rayDirX);
-		cast->deltaDistY = (cast->rayDirY == 0) ? 1e30 : fabs(1 / cast->rayDirY);
+		cast->camera_x = 2 * x / (double)SCREEN_W - 1;
+		cast->ray_dir_x = player->vision_x + player->plane_x * cast->camera_x;
+		cast->ray_dir_y = player->vision_y + player->plane_y * cast->camera_x;
+		cast->map_x = (int)player->axis_x;
+		cast->map_y = (int)player->axis_y;
+		if (cast->ray_dir_x == 0)
+			cast->delta_dist_x = 1e30;
+		else
+			cast->delta_dist_x = fabs(1 / cast->ray_dir_x);
+		if (cast->ray_dir_y == 0)
+			cast->delta_dist_y = 1e30;
+		else
+			cast->delta_dist_y = fabs(1 / cast->ray_dir_y);
 		get_steps(player, cast);
-		DDA_algorhitm(game, cast);
+		dda_algorithm(game, cast);
 		set_distance(cast, player);
 		draw_columns(game, cast, x);
 		x++;
